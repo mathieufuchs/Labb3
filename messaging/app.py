@@ -7,6 +7,7 @@ import sys
 import os
 import swiftclient.client
 import json
+import time
 appC = Celery('tasks', backend='amqp', broker='amqp://')
 @appC.task(ignore_result=True)
 def print_hello():
@@ -55,7 +56,8 @@ app = Flask(__name__)
 def cow_say():
     tweets = parseTweets.delay()
     while(tweets.ready() == False):
-    	pass
+    	print "celery is working"
+    	time.sleep(5)
 	return jsonify(tweets), 200
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',debug=True)
