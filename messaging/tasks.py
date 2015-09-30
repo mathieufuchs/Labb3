@@ -4,6 +4,16 @@ app = Celery('tasks', backend='amqp', broker='amqp://')
 def print_hello():
     print 'hello there'
 
+"""
+names_of_files
+for name in name_of_files:
+
+
+	parseTweets(name)
+
+"""
+
+
 
 @app.task
 def parseTweets():
@@ -30,9 +40,10 @@ def parseTweets():
 		objects = open('tweetsTemp.txt', 'r')
 		for line in objects:
 			try:
-				tmp = json.loads(line)["text"].split()
-				retweet = json.loads(line)["retweeted"]
-				if retweet == False:
+				tmp1 = json.loads(line)["text"].lower()
+				tmp = tmp1.split()
+				retweet = json.loads(line)["retweet_count"]
+				if retweet == 0:
 					for i in range(len(pronoms)):
 						if(pronoms[i] in tmp):
 							pronoms_count[i] += 1
