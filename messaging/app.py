@@ -8,8 +8,11 @@ app = Flask(__name__)
 
 @app.route('/Labb3/messaging/', methods=['GET'])
 def cow_say():
-    data=subprocess.check_output(["parseTweets"])
-    return data
+    from tasks import parseTweets
+
+	tweets = parseTweets.delay()
+    
+    return tweets
 
 if __name__ == '__main__':
     
