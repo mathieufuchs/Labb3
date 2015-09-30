@@ -22,22 +22,22 @@ def parseTweets():
 
 	tweets = conn.get_container("tweets")[1]
 	for t in tweets:
-    	print t["name"]
-    	obj = conn.get_object("tweets", t["name"])
+		print t["name"]
+		obj = conn.get_object("tweets", t["name"])
 		objects = open('tweetsTemp.txt', 'w')
 		objects.write(obj[1])
 		objects.close()
 		objects = open('tweetsTemp.txt', 'r')
 		for line in objects:
-		    try:
-		        tmp = json.loads(line)["text"]
-		        retweet = json.loads(line)["retweeted"]
-		        if retweet == false:
-		        	for i in range(len(pronoms)):
-		            	if(pronoms[i] in tmp):
-		                	pronoms_count[i] += 1
-		    except:
-		        pass
+			try:
+				tmp = json.loads(line)["text"].split()
+				retweet = json.loads(line)["retweeted"]
+				if retweet == False:
+					for i in range(len(pronoms)):
+						if(pronoms[i] in tmp):
+							pronoms_count[i] += 1
+			except:
+				pass
 		objects.close()
 	for i in range(len(pronoms)):
-	    print "Antal %s: %i" %(pronoms[i], pronoms_count[i])
+		print "Antal %s: %i" %(pronoms[i], pronoms_count[i])
