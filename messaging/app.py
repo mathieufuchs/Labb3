@@ -55,9 +55,12 @@ app = Flask(__name__)
 @app.route('/Labb3/messaging', methods=['GET'])
 def cow_say():
 	tweetTask = parseTweets.delay()
+	print "Celery is working..."
+	counter = 0
 	while (tweetTask.ready() == False):
-		print "celery is working"
+		print "... %i s" %(counter)
 		time.sleep(5)
+	print "The task is done!"
 	return jsonify(tweetTask.get()), 200
 
 if __name__ == '__main__':
