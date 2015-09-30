@@ -27,8 +27,7 @@ def parseTweets():
 
 	conn = swiftclient.client.Connection(auth_version=2, **config)
 
-	pronoms=["han", "hon", "den", "det", "denna", "denne", "hen"] 
-	pronoms_count= [0,0,0,0,0,0,0]
+	pronoms={"han":0 , "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0} 
 
 	tweets = conn.get_container("tweets")[1]
 	for t in tweets:
@@ -44,11 +43,10 @@ def parseTweets():
 				tmp = tmp1.split()
 				retweet = json.loads(line)["retweet_count"]
 				if retweet == 0:
-					for i in range(len(pronoms)):
-						if(pronoms[i] in tmp):
-							pronoms_count[i] += 1
+					for i in pronoms.keys():
+						if(i in tmp):
+							pronoms[i] += 1
 			except:
 				pass
 		objects.close()
-	for i in range(len(pronoms)):
-		print "Antal %s: %i" %(pronoms[i], pronoms_count[i])
+	return json.dumps(pronoms)
