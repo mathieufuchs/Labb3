@@ -1,6 +1,12 @@
 #!flask/bin/python
 
 from celery import Celery
+from flask import Flask, jsonify
+import subprocess
+import sys
+import os
+import swiftclient.client
+import json
 appC = Celery('tasks', backend='amqp', broker='amqp://')
 @appC.task(ignore_result=True)
 def print_hello():
@@ -9,9 +15,7 @@ def print_hello():
 
 @appC.task
 def parseTweets():
-	import os
-	import swiftclient.client
-	import json
+	
 	config = {'user':os.environ['OS_USERNAME'], 
           'key':os.environ['OS_PASSWORD'],
           'tenant_name':os.environ['OS_TENANT_NAME'],
@@ -41,11 +45,9 @@ def parseTweets():
 			except:
 				pass
 		objects.close()
-	return json.dumps(pronoms)
+	return pronoms
 
-from flask import Flask, jsonify
-import subprocess
-import sys
+
 
 app = Flask(__name__)
 
@@ -54,7 +56,7 @@ def cow_say():
     tweets = parseTweets.delay()
     while(tweets.ready() == False):
     	pass
-	return tweets
+	return jsonify(tweets), 200
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',debug=True)
 
