@@ -26,8 +26,9 @@ def parseTweets():
 
 	pronoms={"han": 0, "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0} 
 
-	tweets = conn.get_container("tweets")[1]
-	tweets = tweets[0:1]
+	#tweets = conn.get_container("tweets")[1]
+	#tweets = tweets[0:1]
+	tweets = [{"name":"tweets_19.txt"}]
 	for t in tweets:
 		print t["name"]
 		obj = conn.get_object("tweets", t["name"])
@@ -60,6 +61,7 @@ def cow_say():
 	counter = 0
 	while (tweetTask.ready() == False):
 		print "... %i s" %(counter)
+		counter += counter
 		time.sleep(5)
 	print "The task is done!"
 
