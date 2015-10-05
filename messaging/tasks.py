@@ -18,7 +18,7 @@ for name in name_of_files:
 
 
 @app.task()
-def parseTweets():
+def parseTweets(tweetName):
 	
 	config = {'user':os.environ['OS_USERNAME'], 
           'key':os.environ['OS_PASSWORD'],
@@ -29,16 +29,16 @@ def parseTweets():
 
 	pronoms={"han": 0, "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0} 
 
-	tweets = conn.get_container("tweets")[1]
+	#tweets = conn.get_container("tweets")[1]
 	#tweets = tweets[0:1]
 	#tweets = [{"name":"tweets_19.txt"}]
 	for t in tweets:
 		print t["name"]
-		obj = conn.get_object("tweets", t["name"])
-		objects = open('tweetsTemp.txt', 'w')
+		obj = conn.get_object("tweets", tweetName)
+		objects = open(tweetName + '.txt', 'w')
 		objects.write(obj[1])
 		objects.close()
-		objects = open('tweetsTemp.txt', 'r')
+		objects = open(tweetName + '.txt', 'r')
 		for line in objects:
 			try:
 				tmp1 = json.loads(line)["text"].lower()

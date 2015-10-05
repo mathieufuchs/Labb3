@@ -8,6 +8,7 @@ import os
 import swiftclient.client
 import json
 import time
+from collections import Counter
 appC = Celery('tasks', backend='amqp', broker='amqp://')
 @appC.task(ignore_result=True)
 def print_hello():
@@ -56,7 +57,28 @@ app = Flask(__name__)
 
 @app.route('/Labb3/messaging', methods=['GET'])
 def cow_say():
-	tweetTask = parseTweets.delay()
+	config = {'user':os.environ['OS_USERNAME'], 
+          'key':os.environ['OS_PASSWORD'],
+          'tenant_name':os.environ['OS_TENANT_NAME'],
+          'authurl':os.environ['OS_AUTH_URL']}
+
+	conn = swiftclient.client.Connection(auth_version=2, **config)
+
+	tweets = conn.get_container("tweets")[1]
+
+	A = tweets[:4]
+	B = tweets[4:8]
+	C = tweets[8:12]
+	D = tweets[12:16]
+	E = tweets[16:]
+
+	job = group(parseTweets.s(A["name"]), 
+		parseTweets.s(B["name"]), 
+		parseTweets.s(C["name"]),
+		parseTweets.s(D["name"]),
+		parseTweets.s(E["name"]))
+
+	tweetTask = job.apply_async()
 	print "Celery is working..."
 	counter = 0
 	while (tweetTask.ready() == False):
@@ -65,7 +87,13 @@ def cow_say():
 		time.sleep(5)
 	print "The task is done!"
 
-	return jsonify(tweetTask.get()), 200
+	toReturn = tweetTask.get()
+
+	c = Counter()
+	for d in toReturn:
+    	c.update(d)
+
+	return jsonify(dict(c)), 200
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',debug=True)
