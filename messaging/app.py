@@ -61,7 +61,7 @@ def cow_say():
 	counter = 0
 	while (tweetTask.ready() == False):
 		print "... %i s" %(counter)
-		counter += counter
+		counter += 5
 		time.sleep(5)
 	print "The task is done!"
 
