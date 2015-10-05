@@ -1,4 +1,7 @@
 from celery import Celery
+import os
+import swiftclient.client
+import json
 app = Celery('tasks', backend='amqp', broker='amqp://')
 @app.task(ignore_result=True)
 def print_hello():
@@ -26,9 +29,9 @@ def parseTweets():
 
 	pronoms={"han": 0, "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0} 
 
-	#tweets = conn.get_container("tweets")[1]
+	tweets = conn.get_container("tweets")[1]
 	#tweets = tweets[0:1]
-	tweets = [{"name":"tweets_19.txt"}]
+	#tweets = [{"name":"tweets_19.txt"}]
 	for t in tweets:
 		print t["name"]
 		obj = conn.get_object("tweets", t["name"])
