@@ -35,10 +35,10 @@ def parseTweets(tweetName):
 	for t in tweetName:
 		print t
 		obj = conn.get_object("tweets", t)
-		objects = open(tweetName + '.txt', 'w')
+		objects = open(t + '.txt', 'w')
 		objects.write(obj[1])
 		objects.close()
-		objects = open(tweetName + '.txt', 'r')
+		objects = open(t + '.txt', 'r')
 		for line in objects:
 			try:
 				jL = json.loads(line)
