@@ -66,7 +66,7 @@ def cow_say():
 	conn = swiftclient.client.Connection(auth_version=2, **config)
 
 	tweets = []
-	(res,tweetsObject) = conn.get_container("tweets")[1]
+	(res,tweetsObject) = conn.get_container("tweets")
 	for t in tweetsObject:
 		tweets.append(t["name"])
 
