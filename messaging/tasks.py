@@ -14,12 +14,9 @@ for name in name_of_files:
 """
 
 
-
-@app.task
+@app.task()
 def parseTweets():
-	import os
-	import swiftclient.client
-	import json
+	
 	config = {'user':os.environ['OS_USERNAME'], 
           'key':os.environ['OS_PASSWORD'],
           'tenant_name':os.environ['OS_TENANT_NAME'],
@@ -27,9 +24,11 @@ def parseTweets():
 
 	conn = swiftclient.client.Connection(auth_version=2, **config)
 
-	pronoms={"han":0 , "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0} 
+	pronoms={"han": 0, "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0} 
 
-	tweets = conn.get_container("tweets")[1]
+	#tweets = conn.get_container("tweets")[1]
+	#tweets = tweets[0:1]
+	tweets = [{"name":"tweets_19.txt"}]
 	for t in tweets:
 		print t["name"]
 		obj = conn.get_object("tweets", t["name"])
@@ -49,4 +48,4 @@ def parseTweets():
 			except:
 				pass
 		objects.close()
-	return json.dumps(pronoms)
+	return pronoms
