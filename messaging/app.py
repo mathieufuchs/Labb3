@@ -65,7 +65,10 @@ def cow_say():
 
 	conn = swiftclient.client.Connection(auth_version=2, **config)
 
-	tweets = conn.get_container("tweets")[1]
+	tweets = []
+	(res,tweetsObject) = conn.get_container("tweets")[1]
+	for t in tweetsObject:
+		tweets.append(t["name"])
 
 	A = tweets[:4]
 	B = tweets[4:8]
@@ -73,11 +76,11 @@ def cow_say():
 	D = tweets[12:16]
 	E = tweets[16:]
 
-	job = group(parseTweets.s(A["name"]), 
-		parseTweets.s(B["name"]), 
-		parseTweets.s(C["name"]),
-		parseTweets.s(D["name"]),
-		parseTweets.s(E["name"]))
+	job = group(parseTweets.s(A), 
+		parseTweets.s(B), 
+		parseTweets.s(C),
+		parseTweets.s(D),
+		parseTweets.s(E))
 
 	tweetTask = job.apply_async()
 	print "Celery is working..."
