@@ -27,7 +27,8 @@ def parseTweets(tweetName):
 
 	conn = swiftclient.client.Connection(auth_version=2, **config)
 
-	pronoms={"han": 0, "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0} 
+	pronoms={"han": 0, "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0}
+	n = 0 
 
 	#tweets = conn.get_container("tweets")[1]
 	#tweets = tweets[0:1]
@@ -35,10 +36,10 @@ def parseTweets(tweetName):
 	for t in tweetName:
 		print t
 		obj = conn.get_object("tweets", t)
-		objects = open(t + '.txt', 'w')
+		objects = open(t, 'w')
 		objects.write(obj[1])
 		objects.close()
-		objects = open(t + '.txt', 'r')
+		objects = open(t, 'r')
 		for line in objects:
 			try:
 				jL = json.loads(line)
@@ -46,10 +47,12 @@ def parseTweets(tweetName):
 				tmp = tmp1.split()
 				retweet = jL["retweet_count"]
 				if retweet == 0:
+					n += 1
 					for i in pronoms.keys():
 						if(i in tmp):
 							pronoms[i] += 1
 			except:
 				pass
 		objects.close()
+	pronoms.update({"num_of_tweets": n})
 	return pronoms
