@@ -1,6 +1,7 @@
 #!flask/bin/python
 
 from celery import Celery
+from celery import group
 from flask import Flask, jsonify
 import subprocess
 import sys
@@ -91,7 +92,7 @@ def cow_say():
 
 	c = Counter()
 	for d in toReturn:
-    	c.update(d)
+		c.update(d)
 
 	return jsonify(dict(c)), 200
 

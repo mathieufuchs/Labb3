@@ -41,9 +41,10 @@ def parseTweets(tweetName):
 		objects = open(tweetName + '.txt', 'r')
 		for line in objects:
 			try:
-				tmp1 = json.loads(line)["text"].lower()
+				jL = json.loads(line)
+				tmp1 = jL["text"].lower()
 				tmp = tmp1.split()
-				retweet = json.loads(line)["retweet_count"]
+				retweet = jL["retweet_count"]
 				if retweet == 0:
 					for i in pronoms.keys():
 						if(i in tmp):
