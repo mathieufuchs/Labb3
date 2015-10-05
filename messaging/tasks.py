@@ -32,9 +32,9 @@ def parseTweets(tweetName):
 	#tweets = conn.get_container("tweets")[1]
 	#tweets = tweets[0:1]
 	#tweets = [{"name":"tweets_19.txt"}]
-	for t in tweets:
-		print t["name"]
-		obj = conn.get_object("tweets", tweetName)
+	for t in tweetName:
+		print t
+		obj = conn.get_object("tweets", t)
 		objects = open(tweetName + '.txt', 'w')
 		objects.write(obj[1])
 		objects.close()
