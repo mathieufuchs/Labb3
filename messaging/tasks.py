@@ -2,6 +2,7 @@ from celery import Celery
 import os
 import swiftclient.client
 import json
+import urllib2
 app = Celery('tasks', backend='amqp', broker='amqp://')
 @app.task(ignore_result=True)
 def print_hello():
