@@ -8,6 +8,8 @@ from celery import group
 
 from flask import Flask, jsonify, redirect, url_for
 
+from tasks import parseTweets
+
 import subprocess
 
 import sys
