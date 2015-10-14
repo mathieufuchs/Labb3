@@ -1,7 +1,7 @@
 #!flask/bin/python
 
-#from celery import Celery
-#from celery import group
+from celery import Celery
+from celery import group
 from flask import Flask, jsonify
 import subprocess
 import sys
