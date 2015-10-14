@@ -19,13 +19,6 @@ for name in name_of_files:
 
 @app.task()
 def parseTweets(tweetName):
-	
-	config = {'user':os.environ['OS_USERNAME'], 
-          'key':os.environ['OS_PASSWORD'],
-          'tenant_name':os.environ['OS_TENANT_NAME'],
-          'authurl':os.environ['OS_AUTH_URL']}
-
-	conn = swiftclient.client.Connection(auth_version=2, **config)
 
 	pronoms={"han": 0, "hon": 0, "den": 0, "det": 0, "denna": 0, "denne": 0, "hen": 0}
 	n = 0 
@@ -35,9 +28,11 @@ def parseTweets(tweetName):
 	#tweets = [{"name":"tweets_19.txt"}]
 	for t in tweetName:
 		print t
-		obj = conn.get_object("tweets", t)
+		req = urllib2.Request("http://smog.uppmax.uu.se:8080/swift/v1/tweets/" + t)
+		response = urllib2.urlopen(req)
+		obj = response.read()
 		objects = open(t, 'w')
-		objects.write(obj[1])
+		objects.write(obj)
 		objects.close()
 		objects = open(t, 'r')
 		for line in objects:
