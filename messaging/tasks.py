@@ -3,20 +3,7 @@ import os
 import swiftclient.client
 import json
 import urllib2
-app = Celery('tasks', backend='amqp', broker='amqp://')
-@app.task(ignore_result=True)
-def print_hello():
-    print 'hello there'
-
-"""
-names_of_files
-for name in name_of_files:
-
-
-	parseTweets(name)
-
-"""
-
+app = Celery('tasks', backend='amqp', broker='amqp://ma:fu@130.238.29.120/mafu')
 
 @app.task()
 def parseTweets(tweetName):
