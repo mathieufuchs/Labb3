@@ -4,7 +4,7 @@ import swiftclient.client
 import json
 import time
 import urllib2
-app = Celery('tasks', backend='amqp', broker='amqp://ma:fu@130.238.29.171:5672/mafu')
+app = Celery('tasks', backend='amqp', broker='amqp://ma:fu@130.238.29.150:5672/mafu')
 
 @app.task()
 def parseTweets(t):
